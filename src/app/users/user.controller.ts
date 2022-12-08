@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { firstServiceFunction } from './app.service';
+import { firstServiceFunction } from './user.service';
 
 const router = Router();
 
@@ -9,4 +9,4 @@ router.get('/', (_, res) => {
     res.json(result);
 });
 
-export const firstController = router;
+export const firstUserController = router;

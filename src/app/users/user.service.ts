@@ -1,4 +1,4 @@
 export function firstServiceFunction() {
-    const result = 'Hello to all people';
+    const result = 'Hello to all from users';
     return result;
 }
