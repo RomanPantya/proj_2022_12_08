@@ -64,22 +64,38 @@ export async function updateFamily(
     family: UpdateFamilyDto,
     // Partial<Omit<FamilyEntity, 'id'>>,
 ) {
-    const { rows: [result1] } = await connection.query(`
-    select * from family
-    where id = $1
-    `, [familyId]);
+    const entries = Object.entries(family);
+    entries.push(['id', familyId]);
 
-    const { name: nameF, leybel: leybelF } = result1;
-    const { name = nameF, leybel = leybelF } = family;
-
-    const { rows: [result] } = await connection.query(`
+    const { rows: [result] } = connection.query(`
     update family
     set
-    name = $1,
-    leybel = $2
-    where id = $3
-    returning *
-    `, [name, leybel, familyId]);
+    
+    ${entries.slice(0, -1).map(([k], i) => {
+        const dollar = `$${i + 1}`;
 
-    return result;
+        return `${k} = ${dollar}`;
+    }).join(' ,')
+  }
+    
+    `);
+
+    // const { rows: [result1] } = await connection.query(`
+    // select * from family
+    // where id = $1
+    // `, [familyId]);
+
+    // const { name: nameF, leybel: leybelF } = result1;
+    // const { name = nameF, leybel = leybelF } = family;
+
+    // const { rows: [result] } = await connection.query(`
+    // update family
+    // set
+    // name = $1,
+    // leybel = $2
+    // where id = $3
+    // returning *
+    // `, [name, leybel, familyId]);
+
+    // return result;
 }

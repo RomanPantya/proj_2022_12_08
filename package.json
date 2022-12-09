@@ -8,15 +8,12 @@
     "dist/**/*"
   ],
   "scripts": {
-    "prepublish": "tsc",
     "version": "git add -A src",
     "postversion": "git push",
     "build": "npx tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "start:dev": "ts-node-dev src/index.ts",
-    "test": "echo 'husky' will run 'test' script on every push. If you have tests - update 'test' script",
-    "lint": "npx eslint --fix 'src/**/*.ts' './jest.config.ts'",
-    "prepare": "npm run build && husky install"
+    "lint": "npx eslint --fix 'src/**/*.ts' './jest.config.ts'"
   },
   "repository": {
     "type": "git",
@@ -28,11 +25,6 @@
     "url": "https://github.com/TODO-replace-with-your-github-account-name/proj_2022_12_08/issues"
   },
   "homepage": "https://github.com/TODO-replace-with-your-github-account-name/proj_2022_12_08#readme",
-  "husky": {
-    "hooks": {
-      "pre-push": "npm test"
-    }
-  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
@@ -57,7 +49,6 @@
     "eslint": "^8.29.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "husky": "^8.0.2",
     "jest": "^29.3.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
