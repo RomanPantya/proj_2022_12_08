@@ -1,9 +1,11 @@
 import { PoolClient } from 'pg';
 import { CreateFamilyDto } from '../../dto/family.dto/create-family.dto';
+import { UpdateFamilyDto } from '../../dto/family.dto/update-family.dto';
 
 export async function createFamily(
     connection: PoolClient,
     family: CreateFamilyDto,
+    // Omit<FamilyEntity, 'id'>
 ) {
     const { rows: [result] } = await connection.query(`
     insert into family(
@@ -54,4 +56,30 @@ export async function removeOneFamily(
     `, [familyId]);
 
     return rows;
+}
+
+export async function updateFamily(
+    connection: PoolClient,
+    familyId: string,
+    family: UpdateFamilyDto,
+    // Partial<Omit<FamilyEntity, 'id'>>,
+) {
+    const { rows: [result1] } = await connection.query(`
+    select * from family
+    where id = $1
+    `, [familyId]);
+
+    const { name: nameF, leybel: leybelF } = result1;
+    const { name = nameF, leybel = leybelF } = family;
+
+    const { rows: [result] } = await connection.query(`
+    update family
+    set
+    name = $1,
+    leybel = $2
+    where id = $3
+    returning *
+    `, [name, leybel, familyId]);
+
+    return result;
 }

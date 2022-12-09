@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-    createFamily, getOneFamily, getAllFemily, removeOneFamily,
+    createFamily, getOneFamily, getAllFemily, removeOneFamily, updateFamily,
 } from './family.service';
 
 const router = Router();
@@ -40,6 +40,22 @@ router.delete('/:id', async (req, res) => {
 
     res.json({
         message: 'This family was remove',
+        data: result,
+    });
+});
+
+router.put('/:id', async (req, res) => {
+    const { id: familyId } = req.params;
+    const realyData = req.body;
+
+    if (!Object.entries(realyData).length) {
+        res.json('Not have data to update!');
+        return;
+    }
+    const result = await updateFamily(req.db, familyId, realyData);
+
+    res.json({
+        message: 'Family with change',
         data: result,
     });
 });

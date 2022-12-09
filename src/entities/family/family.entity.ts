@@ -1,6 +1,6 @@
 import { IFamily } from './family.interface';
 
-export class Family implements IFamily {
+export class FamilyEntity implements IFamily {
     id!: number;
 
     name!: string;
