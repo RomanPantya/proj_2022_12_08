@@ -1,5 +1,7 @@
 import { Router } from 'express';
-import { createFamily, getOneFamily, getAllFemily } from './family.service';
+import {
+    createFamily, getOneFamily, getAllFemily, removeOneFamily,
+} from './family.service';
 
 const router = Router();
 
@@ -28,6 +30,16 @@ router.get('/', async (req, res) => {
 
     res.json({
         message: 'Thats all family',
+        data: result,
+    });
+});
+
+router.delete('/:id', async (req, res) => {
+    const { id: familyId } = req.params;
+    const result = await removeOneFamily(req.db, familyId);
+
+    res.json({
+        message: 'This family was remove',
         data: result,
     });
 });

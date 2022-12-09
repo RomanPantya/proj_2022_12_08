@@ -42,3 +42,16 @@ export async function getAllFemily(
 
     return rows;
 }
+
+export async function removeOneFamily(
+    connection: PoolClient,
+    familyId: string,
+) {
+    const { rows } = await connection.query(`
+    delete from family
+    where id = $1
+    returning *
+    `, [familyId]);
+
+    return rows;
+}
