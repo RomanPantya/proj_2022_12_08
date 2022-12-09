@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createFamily, getOneFamily } from './family.service';
+import { createFamily, getOneFamily, getAllFemily } from './family.service';
 
 const router = Router();
 
@@ -19,6 +19,15 @@ router.get('/:id', async (req, res) => {
 
     res.json({
         message: 'Thats your family',
+        data: result,
+    });
+});
+
+router.get('/', async (req, res) => {
+    const result = await getAllFemily(req.db);
+
+    res.json({
+        message: 'Thats all family',
         data: result,
     });
 });

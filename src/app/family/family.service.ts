@@ -31,3 +31,14 @@ export async function getOneFamily(
 
     return rows;
 }
+
+export async function getAllFemily(
+    connection: PoolClient,
+) {
+    const { rows } = await connection.query(`
+  select *
+  from family
+  `);
+
+    return rows;
+}
