@@ -1,12 +1,16 @@
 import { Router } from 'express';
-import { firstFamilyFunction } from './family.service';
+import { createFamily } from './family.service';
 
 const router = Router();
 
-router.get('/', (_, res) => {
-    const result = firstFamilyFunction();
+router.post('/', async (req, res) => {
+    const family = req.body;
+    const result = await createFamily(req.db, family);
 
-    res.json(result);
+    res.json({
+        message: 'This family created',
+        data: result,
+    });
 });
 
-export const firstFamilyController = router;
+export const familyController = router;

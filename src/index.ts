@@ -1,7 +1,7 @@
 import { generateServer } from './app/generate-server';
 import { connectToPg } from './common/connect-to-pg';
 import { firstUserController } from './app/users/user.controller';
-import { firstFamilyController } from './app/family/family.controller';
+import { familyController } from './app/family/family.controller';
 
 async function main() {
     const app = generateServer();
@@ -13,7 +13,7 @@ async function main() {
     });
 
     app.use('/users', firstUserController);
-    app.use('/family', firstFamilyController);
+    app.use('/family', familyController);
 
     const port = 3000;
     app.listen(port, () => {
