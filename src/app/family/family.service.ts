@@ -67,7 +67,7 @@ export async function updateFamily(
     const entries = Object.entries(family);
     entries.push(['id', familyId]);
 
-    const { rows: [result] } = connection.query(`
+    const { rows: [result] } = await connection.query(`
     update family
     set
     
@@ -75,10 +75,13 @@ export async function updateFamily(
         const dollar = `$${i + 1}`;
 
         return `${k} = ${dollar}`;
-    }).join(' ,')
-  }
-    
-    `);
+    }).join(' ,')}
+
+    where id = $${entries.length}
+    returning *   
+    `, entries.map(([, v]) => v));
+
+    return result;
 
     // const { rows: [result1] } = await connection.query(`
     // select * from family
