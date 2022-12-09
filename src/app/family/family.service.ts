@@ -25,13 +25,13 @@ export async function getOneFamily(
     connection: PoolClient,
     familyId: string,
 ) {
-    const { rows } = await connection.query(`
+    const { rows: [result] } = await connection.query(`
     select *
     from family
     where id = $1
     `, [familyId]);
 
-    return rows;
+    return result;
 }
 
 export async function getAllFemily(
@@ -49,13 +49,13 @@ export async function removeOneFamily(
     connection: PoolClient,
     familyId: string,
 ) {
-    const { rows } = await connection.query(`
+    const { rows: [result] } = await connection.query(`
     delete from family
     where id = $1
     returning *
     `, [familyId]);
 
-    return rows;
+    return result;
 }
 
 export async function updateFamily(
