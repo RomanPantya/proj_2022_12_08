@@ -18,3 +18,16 @@ export async function createFamily(
     `, [family.name, family.leybel]);
     return result;
 }
+
+export async function getOneFamily(
+    connection: PoolClient,
+    familyId: string,
+) {
+    const { rows } = await connection.query(`
+    select *
+    from family
+    where id = $1
+    `, [familyId]);
+
+    return rows;
+}
