@@ -1,12 +1,16 @@
 import { Router } from 'express';
-import { firstServiceFunction } from './user.service';
+import { createUser } from './user.service';
 
 const router = Router();
 
-router.post('/', (_, res) => {
-    const result = firstServiceFunction();
+router.post('/', async (req, res) => {
+    const user = req.body;
+    const result = await createUser(req.db, user);
 
-    res.json(result);
+    res.json({
+        message: 'This user was create',
+        data: result,
+    });
 });
 
-export const firstUserController = router;
+export const userController = router;

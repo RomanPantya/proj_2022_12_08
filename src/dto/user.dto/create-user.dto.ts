@@ -3,4 +3,4 @@ import {
 } from '@nestjs/mapped-types';
 import { FullUserDto } from './full-user.dto';
 
-export class CreateUserDto extends IntersectionType(OmitType(FullUserDto, ['id']), PartialType(PickType(FullUserDto, ['family_id']))) {}
+export class CreateUserDto extends IntersectionType(OmitType(FullUserDto, ['id', 'family_id']), PartialType(PickType(FullUserDto, ['family_id']))) {}

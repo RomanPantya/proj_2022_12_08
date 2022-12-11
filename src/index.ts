@@ -1,6 +1,6 @@
 import { generateServer } from './app/generate-server';
 import { connectToPg } from './common/connect-to-pg';
-import { firstUserController } from './app/users/user.controller';
+import { userController } from './app/users/user.controller';
 import { familyController } from './app/family/family.controller';
 
 async function main() {
@@ -12,7 +12,7 @@ async function main() {
         next();
     });
 
-    app.use('/users', firstUserController);
+    app.use('/users', userController);
     app.use('/family', familyController);
 
     const port = 3000;
