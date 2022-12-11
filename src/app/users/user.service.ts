@@ -45,3 +45,16 @@ export async function getAllUsers(
 
     return rows;
 }
+
+export async function removeUser(
+    connection: PoolClient,
+    userId: string,
+) {
+    const { rows: [result] } = await connection.query(`
+    delete from users
+    where id = $1
+    returning *
+    `, [userId]);
+
+    return result;
+}
