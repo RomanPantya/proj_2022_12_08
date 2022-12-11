@@ -35,3 +35,13 @@ export async function getOneUser(
 
     return result;
 }
+
+export async function getAllUsers(
+    connection: PoolClient,
+) {
+    const { rows } = await connection.query(`
+    select * 
+    from users`);
+
+    return rows;
+}
