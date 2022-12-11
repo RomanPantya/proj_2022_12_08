@@ -1,10 +1,12 @@
+/* eslint-disable camelcase */
 import { PoolClient } from 'pg';
 import { CreateUserDto } from '../../dto/user.dto/create-user.dto';
+import { UpdateUserDto } from '../../dto/user.dto/update-user.dto';
 
 export async function createUser(
     connection: PoolClient,
     user: CreateUserDto,
-// Omit<FullUserDto, 'id' | 'family_id'> & Partial<Pick<FullUserDto, 'family_id'>>
+    // Omit<UserEntity, 'id' | 'family_id'> & Partial<Pick<UserEntity, 'family_id'>>
 ) {
     const dollars: string[] = [];
     const entries = Object.entries(user);
@@ -57,4 +59,48 @@ export async function removeUser(
     `, [userId]);
 
     return result;
+}
+
+export async function updateUser(
+    connection: PoolClient,
+    userId: string,
+    realyUser: UpdateUserDto,
+    // Partial<Omit<UserEntity, 'id'>>,
+) {
+    const entries = Object.entries(realyUser);
+    entries.push(['id', userId]);
+
+    const { rows: [result] } = await connection.query(`
+    update users
+    set
+    ${entries.slice(0, -1).map(([k], i) => {
+        const dollar = `$${i + 1}`;
+        return `${k} = ${dollar}`;
+    }).join(', ')}
+    where id = $${entries.length}
+    returning *
+    `, entries.map(([, v]) => v));
+
+    return result;
+
+    // const { rows: [result1] } = await connection.query(`
+    // select *
+    // from users
+    // where id = $1
+    // `, [userId]);
+
+    // const { name: n, email: e, family_id: f } = result1;
+    // const { name = n, email = e, family_id = f } = realyUser;
+
+    // const { rows: [result] } = await connection.query(`
+    // update users
+    // set
+    // name = $1,
+    // email = $2,
+    // family_id = $3
+    // where id = $4
+    // returning *
+    // `, [name, email, family_id, userId]);
+
+    // return result;
 }

@@ -50,7 +50,6 @@ router.put('/:id', async (req, res) => {
 
     if (!Object.entries(realyData).length) {
         res.json('Not have data to update!');
-        return;
     }
     const result = await updateFamily(req.db, familyId, realyData);
 
