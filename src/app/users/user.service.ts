@@ -104,3 +104,19 @@ export async function updateUser(
 
     // return result;
 }
+
+export async function allUsersWithFamily(
+    connection: PoolClient,
+    limskip: any,
+) {
+    const { limit, skip } = limskip;
+    const { rows } = await connection.query(`
+    select *
+    from users
+    where family_id is not null
+    limit $1
+    offset $2
+    `, [limit, skip]);
+
+    return rows;
+}

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-    createUser, getOneUser, getAllUsers, removeUser, updateUser,
+    createUser, getOneUser, getAllUsers, removeUser, updateUser, allUsersWithFamily,
 } from './user.service';
 
 const router = Router();
@@ -11,6 +11,16 @@ router.post('/', async (req, res) => {
 
     res.json({
         message: 'This user was create',
+        data: result,
+    });
+});
+
+router.get('/family', async (req, res) => {
+    const limskip = req.query;
+    const result = await allUsersWithFamily(req.db, limskip);
+
+    res.json({
+        message: 'Thats all users with family',
         data: result,
     });
 });
