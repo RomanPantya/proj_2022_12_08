@@ -61,6 +61,19 @@ export async function removeUser(
     return result;
 }
 
+export async function removeUsersByFamilyId(
+    connection: PoolClient,
+    id: string,
+) {
+    const { rows } = await connection.query(`
+    delete from users
+    where family_id = $1
+    returning *
+    `, [id]);
+
+    return rows;
+}
+
 export async function updateUser(
     connection: PoolClient,
     userId: string,
