@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
-    createUser, getOneUser, getAllUsers, removeUser, updateUser, allUsersWithFamily,
+    createUser, getOneUser, getAllUsers,
+    removeUser, updateUser, allUsersWithFamily, allUsersWithoutFamily,
 } from './user.service';
 
 const router = Router();
@@ -21,6 +22,18 @@ router.get('/family', async (req, res) => {
 
     res.json({
         message: 'Thats all users with family',
+        data: result,
+    });
+});
+
+router.get('/not-family', async (req, res) => {
+    const { limit = '2', skip = '0' } = req.query;
+    const result = await allUsersWithoutFamily(req.db, limit, skip);
+
+    res.json({
+        message: result
+            ? 'Thats all users without family'
+            : 'Do not have users without family',
         data: result,
     });
 });

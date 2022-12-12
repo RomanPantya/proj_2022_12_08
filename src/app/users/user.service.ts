@@ -74,7 +74,7 @@ export async function updateUser(
     update users
     set
     ${entries.slice(0, -1).map(([k], i) => {
-        const dollar = `$${i + 1}`;
+        const dollar: string = `$${i + 1}`;
         return `${k} = ${dollar}`;
     }).join(', ')}
     where id = $${entries.length}
@@ -114,6 +114,22 @@ export async function allUsersWithFamily(
     select *
     from users
     where family_id is not null
+    limit $1
+    offset $2
+    `, [limit, skip]);
+
+    return rows;
+}
+
+export async function allUsersWithoutFamily(
+    connection: PoolClient,
+    limit: any,
+    skip: any,
+) {
+    const { rows } = await connection.query(`
+    select *
+    from users
+    where family_id is null
     limit $1
     offset $2
     `, [limit, skip]);
