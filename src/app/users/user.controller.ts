@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import {
     createUser, getOneUser, getAllUsers,
-    removeUser, updateUser, allUsersWithFamily, allUsersWithoutFamily,
+    removeUser, updateUser, allUsersWithFamily,
+    allUsersWithoutFamily, usersByFamilyId,
 } from './user.service';
 
 const router = Router();
@@ -16,26 +17,40 @@ router.post('/', async (req, res) => {
     });
 });
 
+router.get('/family/:id', async (req, res) => {
+    const { id } = req.params;
+    const result = await usersByFamilyId(req.db, id);
+
+    res.json(result.length
+        ? {
+            message: `Thats all users with family_id: ${id}`,
+            data: result,
+        }
+        : `Do not have users with family_id: ${id}`);
+});
+
 router.get('/family', async (req, res) => {
     const limskip = req.query;
     const result = await allUsersWithFamily(req.db, limskip);
 
-    res.json({
-        message: 'Thats all users with family',
-        data: result,
-    });
+    res.json(result.length
+        ? {
+            message: 'Thats all users with family',
+            data: result,
+        }
+        : 'Do not have users with family');
 });
 
 router.get('/not-family', async (req, res) => {
     const { limit = '2', skip = '0' } = req.query;
     const result = await allUsersWithoutFamily(req.db, limit, skip);
 
-    res.json({
-        message: result
-            ? 'Thats all users without family'
-            : 'Do not have users without family',
-        data: result,
-    });
+    res.json(result.length
+        ? {
+            message: 'Thats all users without family',
+            data: result,
+        }
+        : 'Do not have users without family');
 });
 
 router.get('/:id', async (req, res) => {

@@ -136,3 +136,16 @@ export async function allUsersWithoutFamily(
 
     return rows;
 }
+
+export async function usersByFamilyId(
+    connection: PoolClient,
+    id: string,
+) {
+    const { rows } = await connection.query(`
+    select *
+    from users
+    where family_id = $1
+    `, [id]);
+
+    return rows;
+}
